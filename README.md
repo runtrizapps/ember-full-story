@@ -32,6 +32,7 @@ ENV['ember-full-story'] = {
   host: 'www.fullstory.com',           // default
   namespace: 'FS',                     // default
   org: 'YourOrg'                       // required, no default
+  lazyLoad: false                      // default
 };
 ```
 

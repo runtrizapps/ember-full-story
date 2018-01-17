@@ -51,9 +51,4 @@ module.exports = {
       return fsRecordingSnipppet(addonConfig);
     }
   },
-
-  included(app) {
-    this._super.included.apply(this, arguments);
-    app.import('vendor/shims/full-story.js');
-  }
 };

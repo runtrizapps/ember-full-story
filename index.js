@@ -1,7 +1,8 @@
-/* jshint node: true */
+/* eslint-env node */
 'use strict';
 
 const fs = require('fs');
+const path = require('path');
 
 function fsValidateConfig(addonConfig) {
   if (!addonConfig['org']) {
@@ -10,9 +11,10 @@ function fsValidateConfig(addonConfig) {
 }
 
 function fsRecordingSnipppet(addonConfig) {
-  const fsSnippet = fs.readFileSync('fs-snippet.js', 'utf8');
+  const fsSnippet = fs.readFileSync(path.join(__dirname, 'fs-snippet.js'), 'utf8');
   const invokeFs = !addonConfig.lazyLoad;
   return `
+  <script>
     if (typeof Fastboot === 'undefined') {
       window['_fs_debug'] = ${!!addonConfig.debug};
       window['_fs_host'] = '${addonConfig.host}';
@@ -23,6 +25,7 @@ function fsRecordingSnipppet(addonConfig) {
 
       ${ invokeFs ? '_fs_inject_script();' : '' }
     }
+  </script>
   `;
 }
 

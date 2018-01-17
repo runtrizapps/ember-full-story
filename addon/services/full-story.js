@@ -5,16 +5,16 @@ const { Evented } = Ember;
 
 export default Ember.Service.extend(Evented, {
   identify(userId, userVars = {}) {
-    fsMethod('identify', userId, userVars);
+    this._fsMethod('identify', userId, userVars);
   },
 
   setUserVars(userVars = {}) {
-    fsMethod('setUserVars', userVars);
+    this._fsMethod('setUserVars', userVars);
   },
 
   inject() {
     if (window && typeof window._fs_inject_script === 'function') {
-      _fs_inject_script();
+      window._fs_inject_script();
       this.set('isInjected', true);
       this.trigger('injected');
     }
@@ -23,12 +23,12 @@ export default Ember.Service.extend(Evented, {
   isInjected: Ember.computed(function() {
     return window && window.FS;
   }),
-});
 
-function fsMethod(method, ...args) {
-  if (window && window.FS) {
-    window.FS[method](...args);
-  } else {
-    this.one('injected', () => fsMethod(...arguments));
+  _fsMethod(method, ...args) {
+    if (window && window.FS) {
+      window.FS[method](...args);
+    } else {
+      this.one('injected', () => this._fsMethod(...arguments));
+    }
   }
-}
+});

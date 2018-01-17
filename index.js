@@ -11,13 +11,13 @@ function fsValidateConfig(addonConfig) {
 
 function fsRecordingSnipppet(addonConfig) {
   const fsSnippet = fs.readFileSync('fs-snippet.js', 'utf8');
-
+  const invokeFs = !addonConfig.lazyLoad;
   return `
     if (typeof Fastboot === 'undefined') {
-      window['_fs_debug'] =${addonConfig.debug};
-      window['_fs_host'] = ${addonConfig.host};
-      window['_fs_org'] = ${addonConfig.org};
-      window['_fs_namespace'] = ${addonConfig.namespace};
+      window['_fs_debug'] = ${!!addonConfig.debug};
+      window['_fs_host'] = '${addonConfig.host}';
+      window['_fs_org'] = '${addonConfig.org}';
+      window['_fs_namespace'] = '${addonConfig.namespace}';
 
       var _fs_inject_script = function() { ${fsSnippet}; _fs_inject_script = null; };
 
